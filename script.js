@@ -3,7 +3,9 @@
 // Premium subscription state
 let IS_PREMIUM = false;
 let selectedPremiumPlan = "monthly";
-let freeFitUsageCount = parseInt(localStorage.getItem("celedo-free-fit-usage-count") || "0");
+let freeFitUsageCount = parseInt(
+  localStorage.getItem("celedo-free-fit-usage-count") || "0",
+);
 const FREE_FIT_LIMIT = 3;
 
 // Applied Credit/Points tracking
@@ -1984,15 +1986,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // PC drag & wheel scroll enhancement for product detail panel
-  const detailPanelsContainer = document.querySelector(".detail-three-panels-container");
+  const detailPanelsContainer = document.querySelector(
+    ".detail-three-panels-container",
+  );
   if (detailPanelsContainer) {
     // 1) Horizontal wheel scrolling
-    detailPanelsContainer.addEventListener("wheel", (evt) => {
-      if (evt.deltaY !== 0) {
-        evt.preventDefault();
-        detailPanelsContainer.scrollLeft += evt.deltaY * 0.8;
-      }
-    }, { passive: false });
+    detailPanelsContainer.addEventListener(
+      "wheel",
+      (evt) => {
+        if (evt.deltaY !== 0) {
+          evt.preventDefault();
+          detailPanelsContainer.scrollLeft += evt.deltaY * 0.8;
+        }
+      },
+      { passive: false },
+    );
 
     // 2) Horizontal drag scrolling
     let isDown = false;
@@ -2053,9 +2061,11 @@ document.addEventListener("DOMContentLoaded", () => {
       splash.style.opacity = "0";
       setTimeout(() => {
         splash.style.visibility = "hidden";
-        
+
         // Show fullscreen prompt modal if not shown before
-        const promptShown = localStorage.getItem("celedo-fullscreen-prompt-shown");
+        const promptShown = localStorage.getItem(
+          "celedo-fullscreen-prompt-shown",
+        );
         if (!promptShown) {
           const fsModal = document.getElementById("fullscreenPromptModal");
           if (fsModal) {
@@ -2352,7 +2362,9 @@ function checkAndApplyPremiumLocks() {
 
   if (!activeProductDetail) return false;
   const productId = activeProductDetail.id;
-  const unlockedProducts = JSON.parse(localStorage.getItem("celedo-unlocked-products") || "[]");
+  const unlockedProducts = JSON.parse(
+    localStorage.getItem("celedo-unlocked-products") || "[]",
+  );
 
   // If already unlocked
   if (unlockedProducts.includes(productId)) {
@@ -2362,7 +2374,7 @@ function checkAndApplyPremiumLocks() {
 
   const blueprintPanel = document.querySelector(".blueprint-canvas-box");
   const washPanel = document.querySelector(".shrinkage-simulator-box");
-  
+
   removePremiumLocks(); // Clear to prevent duplicates
 
   const isLimitHit = freeFitUsageCount >= FREE_FIT_LIMIT;
@@ -2380,11 +2392,11 @@ function checkAndApplyPremiumLocks() {
   if (blueprintPanel) {
     const overlay = createLockOverlay(
       "스펙 맵 & 워시 핏 잠김",
-      isLimitHit 
-        ? "무료 피팅 횟수를 초과했습니다 (3/3회)." 
+      isLimitHit
+        ? "무료 피팅 횟수를 초과했습니다 (3/3회)."
         : `이 옷의 스펙 맵 & 워시 핏 시뮬레이션을 체크해 보시겠습니까?<br>(남은 무료 횟수: ${remainCount}/3회)`,
       isLimitHit,
-      productId
+      productId,
     );
     blueprintPanel.parentElement.style.position = "relative";
     blueprintPanel.parentElement.appendChild(overlay);
@@ -2396,7 +2408,7 @@ function checkAndApplyPremiumLocks() {
 function createLockOverlay(title, desc, isLimitHit, productId) {
   const overlay = document.createElement("div");
   overlay.className = "premium-lock-overlay";
-  
+
   let actionButton = "";
   if (isLimitHit) {
     actionButton = `<button class="btn-premium-unlock" onclick="openPremiumModal()">프리미엄 해제하여 무제한 확인</button>`;
@@ -2418,19 +2430,27 @@ function unlockProductForFree(productId) {
     openPremiumModal();
     return;
   }
-  
+
   freeFitUsageCount++;
   localStorage.setItem("celedo-free-fit-usage-count", freeFitUsageCount);
 
-  let unlockedProducts = JSON.parse(localStorage.getItem("celedo-unlocked-products") || "[]");
+  let unlockedProducts = JSON.parse(
+    localStorage.getItem("celedo-unlocked-products") || "[]",
+  );
   if (!unlockedProducts.includes(productId)) {
     unlockedProducts.push(productId);
-    localStorage.setItem("celedo-unlocked-products", JSON.stringify(unlockedProducts));
+    localStorage.setItem(
+      "celedo-unlocked-products",
+      JSON.stringify(unlockedProducts),
+    );
   }
 
   removePremiumLocks();
-  showToast(`잠금이 해제되었습니다! (남은 무료 횟수: ${FREE_FIT_LIMIT - freeFitUsageCount}/${FREE_FIT_LIMIT}회)`, "success");
-  
+  showToast(
+    `잠금이 해제되었습니다! (남은 무료 횟수: ${FREE_FIT_LIMIT - freeFitUsageCount}/${FREE_FIT_LIMIT}회)`,
+    "success",
+  );
+
   updateMyPagePremiumCard();
 }
 
@@ -2911,4 +2931,54 @@ function clearOrderHistory() {
     initOrderHistoryView();
     showToast("주문 내역이 모두 초기화되었습니다.", "warning");
   });
+}
+
+// Expose functions to window so inline onclick handlers in index.html work in Vite module scope
+if (typeof window !== "undefined") {
+  if (typeof toggleTheme !== "undefined") window.toggleTheme = toggleTheme;
+  if (typeof selectTPO !== "undefined") window.selectTPO = selectTPO;
+  if (typeof selectStyle !== "undefined") window.selectStyle = selectStyle;
+  if (typeof openProductDetailModal !== "undefined") window.openProductDetailModal = openProductDetailModal;
+  if (typeof toggleReelsFilter !== "undefined") window.toggleReelsFilter = toggleReelsFilter;
+  if (typeof toggleMockupFrame !== "undefined") window.toggleMockupFrame = toggleMockupFrame;
+  if (typeof toggleFullscreen !== "undefined") window.toggleFullscreen = toggleFullscreen;
+  if (typeof switchOrderView !== "undefined") window.switchOrderView = switchOrderView;
+  if (typeof clearOrderHistory !== "undefined") window.clearOrderHistory = clearOrderHistory;
+  if (typeof closeWornModal !== "undefined") window.closeWornModal = closeWornModal;
+  if (typeof toggleBlueprintCompare !== "undefined") window.toggleBlueprintCompare = toggleBlueprintCompare;
+  if (typeof handleShrinkSlider !== "undefined") window.handleShrinkSlider = handleShrinkSlider;
+  if (typeof addActiveProductToCart !== "undefined") window.addActiveProductToCart = addActiveProductToCart;
+  if (typeof closePremiumModal !== "undefined") window.closePremiumModal = closePremiumModal;
+  if (typeof selectPremiumPlan !== "undefined") window.selectPremiumPlan = selectPremiumPlan;
+  if (typeof activatePremiumSubscription !== "undefined") window.activatePremiumSubscription = activatePremiumSubscription;
+  if (typeof closeUgcUploadModal !== "undefined") window.closeUgcUploadModal = closeUgcUploadModal;
+  if (typeof handleUgcUploadSubmit !== "undefined") window.handleUgcUploadSubmit = handleUgcUploadSubmit;
+  if (typeof handleUgcFileChange !== "undefined") window.handleUgcFileChange = handleUgcFileChange;
+  if (typeof closeCheckoutSuccessModal !== "undefined") window.closeCheckoutSuccessModal = closeCheckoutSuccessModal;
+  if (typeof acceptCheckoutPremium !== "undefined") window.acceptCheckoutPremium = acceptCheckoutPremium;
+  if (typeof closeAiOutfitModal !== "undefined") window.closeAiOutfitModal = closeAiOutfitModal;
+  if (typeof closePremiumKitModal !== "undefined") window.closePremiumKitModal = closePremiumKitModal;
+  if (typeof submitPremiumKitAddress !== "undefined") window.submitPremiumKitAddress = submitPremiumKitAddress;
+  if (typeof closeFullscreenPrompt !== "undefined") window.closeFullscreenPrompt = closeFullscreenPrompt;
+  if (typeof openAiOutfitModal !== "undefined") window.openAiOutfitModal = openAiOutfitModal;
+  if (typeof openPremiumModal !== "undefined") window.openPremiumModal = openPremiumModal;
+  if (typeof openUgcUploadModal !== "undefined") window.openUgcUploadModal = openUgcUploadModal;
+  if (typeof openPremiumKitModal !== "undefined") window.openPremiumKitModal = openPremiumKitModal;
+  if (typeof toggleRankingFilter !== "undefined") window.toggleRankingFilter = toggleRankingFilter;
+  if (typeof selectTarotCard !== "undefined") window.selectTarotCard = selectTarotCard;
+  if (typeof applySizeInputMode !== "undefined") window.applySizeInputMode = applySizeInputMode;
+  if (typeof applyUserSpecs !== "undefined") window.applyUserSpecs = applyUserSpecs;
+  if (typeof applyAutoMatchingSpecs !== "undefined") window.applyAutoMatchingSpecs = applyAutoMatchingSpecs;
+  if (typeof verifySizeBeforeCart !== "undefined") window.verifySizeBeforeCart = verifySizeBeforeCart;
+  if (typeof removeCartItem !== "undefined") window.removeCartItem = removeCartItem;
+  if (typeof toggleCartItem !== "undefined") window.toggleCartItem = toggleCartItem;
+  if (typeof checkoutSelectedItems !== "undefined") window.checkoutSelectedItems = checkoutSelectedItems;
+  if (typeof switchSizeInputMode !== "undefined") window.switchSizeInputMode = switchSizeInputMode;
+  if (typeof saveUserSpecs !== "undefined") window.saveUserSpecs = saveUserSpecs;
+  if (typeof toggle3DFitVerification !== "undefined") window.toggle3DFitVerification = toggle3DFitVerification;
+  if (typeof toggleSelectAllCart !== "undefined") window.toggleSelectAllCart = toggleSelectAllCart;
+  if (typeof deleteSelectedCart !== "undefined") window.deleteSelectedCart = deleteSelectedCart;
+  if (typeof handleCreditInputChange !== "undefined") window.handleCreditInputChange = handleCreditInputChange;
+  if (typeof useAllCredits !== "undefined") window.useAllCredits = useAllCredits;
+  if (typeof handleOrderCheckout !== "undefined") window.handleOrderCheckout = handleOrderCheckout;
 }

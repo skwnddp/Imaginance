@@ -1,0 +1,26 @@
+{
+  "name": "imaginance",
+  "version": "1.0.0",
+  "description": "<div style=\"display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 15px; width: 100%;\">\r <img width=\"1600\" height=\"902\" alt=\"Frame 555\" src=\"https://github.com/user-attachments/assets/188ae51b-6dfb-4386-bf5a-57a73abbf2b5\" />\r </div>",
+  "main": "capture.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skwnddp/Imaginance.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/skwnddp/Imaginance/issues"
+  },
+  "homepage": "https://github.com/skwnddp/Imaginance#readme",
+  "devDependencies": {
+    "vite": "^8.0.16"
+  }
+}
