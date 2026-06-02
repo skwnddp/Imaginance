@@ -2981,4 +2981,8 @@ if (typeof window !== "undefined") {
   if (typeof handleCreditInputChange !== "undefined") window.handleCreditInputChange = handleCreditInputChange;
   if (typeof useAllCredits !== "undefined") window.useAllCredits = useAllCredits;
   if (typeof handleOrderCheckout !== "undefined") window.handleOrderCheckout = handleOrderCheckout;
+  if (typeof unlockProductForFree !== "undefined") window.unlockProductForFree = unlockProductForFree;
+  if (typeof startArSizeScan !== "undefined") window.startArSizeScan = startArSizeScan;
+  if (typeof applyArSpecs !== "undefined") window.applyArSpecs = applyArSpecs;
+  if (typeof editUserName !== "undefined") window.editUserName = editUserName;
 }
