@@ -1882,6 +1882,23 @@ document.addEventListener("fullscreenchange", handleFullscreenChange);
 document.addEventListener("webkitfullscreenchange", handleFullscreenChange);
 document.addEventListener("msfullscreenchange", handleFullscreenChange);
 
+function closeFullscreenPrompt(enable) {
+  const fsModal = document.getElementById("fullscreenPromptModal");
+  if (fsModal) {
+    fsModal.style.display = "none";
+  }
+  localStorage.setItem("celedo-fullscreen-prompt-shown", "true");
+  if (enable) {
+    const isAlreadyFullscreen =
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.msFullscreenElement;
+    if (!isAlreadyFullscreen) {
+      toggleFullscreen();
+    }
+  }
+}
+
 function editUserName() {
   const currentName = USER_MY_FIT.name || "김민수";
   showPrompt(
@@ -2036,6 +2053,15 @@ document.addEventListener("DOMContentLoaded", () => {
       splash.style.opacity = "0";
       setTimeout(() => {
         splash.style.visibility = "hidden";
+        
+        // Show fullscreen prompt modal if not shown before
+        const promptShown = localStorage.getItem("celedo-fullscreen-prompt-shown");
+        if (!promptShown) {
+          const fsModal = document.getElementById("fullscreenPromptModal");
+          if (fsModal) {
+            fsModal.style.display = "flex";
+          }
+        }
       }, 500);
     }
   }, 1000);

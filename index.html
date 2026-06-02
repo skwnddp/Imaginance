@@ -1657,6 +1657,24 @@
       </div>
     </div>
 
+    <!-- Fullscreen Mode Suggestion Modal -->
+    <div class="premium-modal-overlay" id="fullscreenPromptModal" style="display: none; z-index: 9000;">
+      <div class="premium-modal-content" style="max-width: 330px; text-align: center; padding: 22px;">
+        <span style="font-size: 32px; display: block; margin-bottom: 8px;">📲</span>
+        <h3 class="premium-modal-title" style="font-size: 14px; font-weight: 800; margin-bottom: 8px;">전체화면 모드로 시작할까요?</h3>
+        <p class="premium-modal-subtitle" style="font-size: 10px; line-height: 1.4; color: var(--text-secondary); margin-bottom: 16px;">
+          전체화면(앱 모드)으로 이용하시면 주소창이 숨겨져<br>
+          <strong>실제 앱처럼 훨씬 쾌적한 화면</strong>으로 쇼핑을 즐기실 수 있어요!<br><br>
+          <span style="font-size: 8.5px; color: var(--text-tertiary);">* 마이페이지 하단 설정에서도 언제든지 변경할 수 있어요</span>
+        </p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <button class="btn" onclick="closeFullscreenPrompt(false)" style="height: 34px; font-size: 11px; padding: 0; background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-secondary);">일반 화면</button>
+          <button class="btn btn-primary" onclick="closeFullscreenPrompt(true)" style="height: 34px; font-size: 11px; padding: 0; background: var(--accent-blue); border: none; color: #fff;">전체화면 켜기</button>
+        </div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
